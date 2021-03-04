@@ -10,3 +10,7 @@ client/.expo
 
 # dotenv environment variables file
 .env
+
+api\DevBank\package-lock.json
+admin\package-lock.json
+client\package-lock.json
