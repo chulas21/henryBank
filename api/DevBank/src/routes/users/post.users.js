@@ -57,13 +57,13 @@ server.post("/:userId", (req, res) => {
   userController
     .getOneUser(userId)
     .then((user) => {
-      console.log("EEEEEEEEEEEEEEE 1");
-      if (!user) {
-        return res.status(400).json({ msg: "User does not exist" });
-      }
-      return userController.updateInfo(user, info);
-    })
-    .then((user) => {
+    //   console.log("EEEEEEEEEEEEEEE 1");
+    //   if (!user) {
+    //     return res.status(400).json({ msg: "User does not exist" });
+    //   }
+    //   return userController.updateInfo(user, info);
+    // })
+    // .then((user) => {
       console.log("EEEEEEEEEEEEEEE 2");
       var cvu = 10000001233 - userId + 500;
       var data = {

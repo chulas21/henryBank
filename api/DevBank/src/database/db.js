@@ -36,8 +36,15 @@ let capsEntries = entries.map((entry) => [
 
 sequelize.models = Object.fromEntries(capsEntries);
 
-const {User, Account, Transfer} = sequelize.models;
+const {User, Account, Transfer, Contact} = sequelize.models;
+
 //realciones de user con cuenta
+// User.belongsToMany(User, { as: 'Contacts', through: Contact, foreignKey: 'userId' });
+
+//Con esta relacion se crea la tabla intermedia contactLists
+Contact.belongsTo(User)
+User.hasMany(Contact)
+
 User.hasMany(Account);
 Account.belongsTo(User);
 
@@ -52,4 +59,4 @@ Account.belongsTo(User);
 module.exports = {
   ...sequelize.models,
   conn: sequelize,
-};
+ };

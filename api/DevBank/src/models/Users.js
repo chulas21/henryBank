@@ -53,5 +53,6 @@ module.exports = (sequelize) => {
     country: {
       type: DataTypes.STRING,
     },
+    
   });
 };

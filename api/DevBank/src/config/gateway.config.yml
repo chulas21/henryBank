@@ -2,24 +2,24 @@ http:
   port: 8080
 admin:
   port: 9876
-  host: ${GATEWAT_HOST}
+  host: localhost
 apiEndpoints:
   api:
-    host: ${GATEWAT_HOST}
+    host: localhost
     paths: '/ip'
   users:
-    host: ${GATEWAT_HOST}
+    host: localhost
     paths: ['/users', '/users/*']
   transacciones:
-    host: ${GATEWAT_HOST}
+    host: localhost
     paths: ['/transacciones', '/transacciones/*']
 serviceEndpoints:
   httpbin:
     url: 'https://httpbin.org'
   usersService:
-    url: 'http://${GATEWAT_HOST}:3000'
+    url: 'http://localhost:3000'
   transaccionesService:
-    url: 'http://${GATEWAT_HOST}:4000'
+    url: 'http://localhost:4000'
 policies:
   - basic-auth
   - cors
