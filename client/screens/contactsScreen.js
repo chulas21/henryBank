@@ -10,9 +10,14 @@ import {
   Button,
   StyleSheet,
   TextInput,
+  TouchableOpacity,
+  ScrollView,
+  Linking,
 } from "react-native";
 import { colors } from "../res";
 import axios from "axios";
+import { Icon } from "react-native-elements";
+import * as Contacts from "expo-contacts";
 
 // var contacts = [
 //   {
@@ -22,12 +27,58 @@ import axios from "axios";
 // ];
 
 export default function ContactsScreen(props) {
+  var phone;
+  const [mobileNumber, setMobileNumber] = useState("");
+  const [whatsAppMsg, setWhatsAppMsg] = useState("Unite a la red DevBank");
+
   const loginUser = useSelector((state) => state.login.loginUser);
   const [modalVisible, setModalVisible] = useState(false);
+  const [modalContactVisible, setModalContactVisible] = useState(false);
   const [contacts, setContacts] = useState([]);
 
   const [email, setEmail] = useState("");
   const [get, setGet] = useState(0);
+
+  const [state, setState] = useState([]);
+  var contact;
+  useEffect(() => {
+    (async () => {
+      const { status } = await Contacts.requestPermissionsAsync();
+      if (status === "granted") {
+        const { data } = await Contacts.getContactsAsync({
+          fields: [Contacts.Fields.PhoneNumbers, Contacts.Fields.Emails],
+        });
+
+        if (data.length > 0) {
+          contact = data;
+          setState(contact);
+        }
+      }
+    })();
+  }, []);
+
+  const mandarMensaje = (telefono) => {
+    phone = telefono;
+    initiateWhatsApp();
+  };
+
+  const initiateWhatsApp = () => {
+    // Check for perfect 10 digit length
+    if (phone.length < 10) {
+      alert("Please insert correct WhatsApp number");
+      return;
+    }
+    // Using 91 for India
+    // You can change 91 with your country code
+    let url = "whatsapp://send?text=" + whatsAppMsg + "&phone=" + phone;
+    Linking.openURL(url)
+      .then((data) => {
+        console.log("WhatsApp Opened");
+      })
+      .catch(() => {
+        alert("Make sure Whatsapp installed on your device");
+      });
+  };
 
   const handleChangeText = (value) => {
     setEmail(value);
@@ -35,7 +86,7 @@ export default function ContactsScreen(props) {
 
   useEffect(() => {
     axios
-      .get("http://192.168.0.27:8080/users/contact/" + loginUser.id)
+      .get("http://192.168.0.11:8080/users/contact/" + loginUser.id)
       .then((data) => {
         setContacts(data.data);
       });
@@ -70,7 +121,7 @@ export default function ContactsScreen(props) {
       email,
     };
     axios
-      .post("http://192.168.0.27:8080/users/contact/" + loginUser.id, dato)
+      .post("http://192.168.0.11:8080/users/contact/" + loginUser.id, dato)
       .then((data) => {
         if (data.data === "ya es un contacto") {
           setModalVisible(!modalVisible);
@@ -87,19 +138,34 @@ export default function ContactsScreen(props) {
       });
   };
 
+  const eliminarContacto = (contactId) => {
+    axios.delete(
+      "http://192.168.0.11:8080/users/contact/" + loginUser.id + "/" + contactId
+    );
+    Alert.alert("AVISO", "Usuario eliminado");
+    setGet(Math.random());
+  };
   return (
     <View style={styles.mainContainer}>
       <View style={styles.container}>
         <Text style={styles.header}> Tus Contactos</Text>
         <SectionList
           sections={getData()}
-          ListFooterComponent={() => (
-            <Button
-              title="Agregar Contacto"
-              onPress={() => setModalVisible(true)}
-            />
+          ListHeaderComponent={() => (
+            <View>
+              <Button
+                title="Agregar Contacto"
+                onPress={() => setModalVisible(true)}
+              />
+              <TouchableOpacity
+                style={styles.longButton}
+                onPress={() => setModalContactVisible(!modalContactVisible)}
+              >
+                <Icon name="md-logo-whatsapp" type="ionicon" />
+                <Text>Invitar Contacto</Text>
+              </TouchableOpacity>
+            </View>
           )}
-          //Estructura de item => { index:2, nombre:"segundo"}
           renderItem={({ item }) => (
             <View style={styles.row}>
               <View>
@@ -107,13 +173,15 @@ export default function ContactsScreen(props) {
               </View>
               <View style={styles.transferBtn}>
                 <Button onPress={() => transfer(item)} title="Transferir" />
+                <Button
+                  color="#ff3464"
+                  onPress={() => eliminarContacto(item.contactId)}
+                  title="Eliminar"
+                />
               </View>
             </View>
           )}
           keyExtractor={(item) => item.index}
-          /* Estructura de cada sección:
-        {data: [ {index:1, nombre: primero} , {index: 34, nombre:pablo}]}
-        */
           renderSectionHeader={({ section }) => {
             <View style={styles.sectionHeader}>
               <Text>{section.title}</Text>
@@ -169,6 +237,60 @@ export default function ContactsScreen(props) {
           </View>
         </Modal>
       </View>
+
+      <View style={styles.centeredView}>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalContactVisible}
+          onRequestClose={() => {
+            Alert.alert("Modal has been closed.");
+            setModalContactVisible(!modalContactVisible);
+          }}
+        >
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <Text style={styles.modalText}>
+                Seleccione contacto a agregar
+              </Text>
+              <ScrollView>
+                {state.length !== 0 ? (
+                  state.map((contact) => (
+                    <Text
+                      onPress={() =>
+                        mandarMensaje(contact.phoneNumbers[0].number)
+                      }
+                      key={contact.id}
+                    >
+                      {contact.name} -{" "}
+                      {contact.phoneNumbers[0].number
+                        ? contact.phoneNumbers[0].number
+                        : "Sin número"}
+                    </Text>
+                  ))
+                ) : (
+                  <Text>Aqui van los contactos</Text>
+                )}
+              </ScrollView>
+              <View
+                style={{
+                  justifyContent: "center",
+                  flexDirection: "row",
+                }}
+              >
+                <View>
+                  <Pressable
+                    style={[styles.button, styles.buttonClose]}
+                    onPress={() => setModalContactVisible(!modalContactVisible)}
+                  >
+                    <Text style={styles.textStyle}>Cancelar</Text>
+                  </Pressable>
+                </View>
+              </View>
+            </View>
+          </View>
+        </Modal>
+      </View>
     </View>
   );
 }
@@ -206,6 +328,7 @@ const styles = StyleSheet.create({
   },
   transferBtn: {
     alignSelf: "flex-end",
+    flexDirection: "row",
   },
   sectionHeader: {},
 
@@ -252,5 +375,18 @@ const styles = StyleSheet.create({
   },
   email: {
     paddingBottom: 20,
+  },
+  longButton: {
+    width: "100%",
+    height: 50,
+    backgroundColor: "#00ff80",
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "row",
+    shadowColor: "#000",
+    shadowOffset: { width: 3, height: 3 },
+    shadowOpacity: 0.5,
+    shadowRadius: 3,
+    elevation: 3,
   },
 });

@@ -76,7 +76,7 @@ function SendMoneyScreen(props) {
     if (datos.currency === "USD") {
       if (datos.value > 0 && datos.value <= balanceDOLARES) {
         axios
-          .post(`http://192.168.0.27:8080/users/transfer/transfer`, datos)
+          .post(`http://192.168.0.11:8080/users/transfer/transfer`, datos)
           .then(() => {
             dispatch(vaciarReducer());
           })
@@ -84,6 +84,7 @@ function SendMoneyScreen(props) {
             Alert.alert("AVISO", "Transferencia realizada con exito");
             dispatch(accountUser(loginUser.id, "PESOS"));
             dispatch(accountUser(loginUser.id, "USD"));
+            props.navigation.navigate("Home");
             //props.route.params = undefined;
           });
       } else {
@@ -97,7 +98,7 @@ function SendMoneyScreen(props) {
     if (datos.currency === "PESOS") {
       if (datos.value > 0 && datos.value <= balancePESOS) {
         axios
-          .post(`http://192.168.0.27:8080/users/transfer/transfer`, datos)
+          .post(`http://192.168.0.11:8080/users/transfer/transfer`, datos)
           .then(() => {
             dispatch(vaciarReducer());
           })
@@ -105,6 +106,7 @@ function SendMoneyScreen(props) {
             Alert.alert("AVISO", "Transferencia realizada con exito");
             dispatch(accountUser(loginUser.id, "PESOS"));
             dispatch(accountUser(loginUser.id, "USD"));
+            props.navigation.navigate("Home");
             //props.route.params = undefined;
           });
       } else {
@@ -168,7 +170,6 @@ function SendMoneyScreen(props) {
           mode="contained"
           onPress={() => {
             sendMoney();
-            props.navigation.navigate("Home");
           }}
         >
           Enviar
