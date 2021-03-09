@@ -70,7 +70,7 @@ function SendMoneyScreen(props) {
       description: state.description,
     };
     axios
-      .post(`http://192.168.0.10:8080/users/transfer/transfer`, datos)
+      .post(`http://localhost:8080/users/transfer/transfer`, datos)
       .then(() => {
         dispatch(vaciarReducer());
       })

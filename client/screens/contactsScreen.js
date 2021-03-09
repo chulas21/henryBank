@@ -19,7 +19,7 @@ export default function ContactsScreen(props) {
 
   useEffect(() => {
     axios
-      .get("http://192.168.0.10:8080/users/contact/" + loginUser.id)
+      .get("http://localhost:8080/users/contact/" + loginUser.id)
       .then((data) => {
         setContacts(data.data);
       });

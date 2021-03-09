@@ -50,7 +50,7 @@ function DepositScreen(props) {
     };
     console.log("DATOS en deposit: ", datos);
     axios
-      .post(`http://192.168.0.10:8080/users/transfer/deposito`, datos)
+      .post(`http://localhost:8080/users/transfer/deposito`, datos)
       .then(() => {
         dispatch(vaciarReducer());
       })
