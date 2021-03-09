@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { StyleSheet, View, Text, Alert } from "react-native";
+import React, { useState } from "react";
+import { StyleSheet, View, Text } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { Button, TextInput } from "react-native-paper";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,115 +8,51 @@ import { Icon } from "react-native-elements";
 import axios from "axios";
 import { vaciarReducer, accountUser } from "../redux/user/actions";
 
-function SendMoneyScreen(props) {
+function SendMoneyScreen2(props) {
   const dispatch = useDispatch(); // para la futura accion
   const loginUser = useSelector((state) => state.login.loginUser);
   const accountUserLogin = useSelector((redux) => redux.user.registerData);
 
   const [state, setState] = useState({
     type: "PESOS",
-    account: props.route.params.cvu_pesos || "",
+    account: "",
     amount: "",
     description: "",
-    cvu: "",
-    currency: "",
   });
 
-  var currencyPESOS,
-    currencyDOLARES = "";
-
-  var cvuPESOS,
-    cvuDOLARES,
-    balancePESOS,
-    balanceDOLARES = 0;
+  var cvu,
+    currency = 0;
   if (accountUserLogin) {
     accountUserLogin.map((p) => {
-      if (p.currency === "PESOS") {
-        cvuPESOS = p.cvu;
-        currencyPESOS = p.currency;
-        balancePESOS = p.balance;
-      } else if (p.currency === "USD") {
-        cvuDOLARES = p.cvu;
-        currencyDOLARES = p.currency;
-        balanceDOLARES = p.balance;
+      if (p.currency === state.type) {
+        cvu = p.cvu;
+        currency = p.currency;
       }
     });
   }
 
   const handleChangeText = (value, name) => {
     setState({ ...state, [name]: value });
-    if (name === "type") {
-      value === "PESOS"
-        ? setState({
-            ...state,
-            type: "PESOS",
-            account: props.route.params.cvu_pesos,
-            cvu: cvuPESOS,
-            currency: currencyPESOS,
-          })
-        : setState({
-            ...state,
-            type: "USD",
-            account: props.route.params.cvu_dolares,
-            cvu: cvuDOLARES,
-            currency: currencyDOLARES,
-          });
-    }
   };
 
   const sendMoney = () => {
     var datos = {
-      origin: state.cvu,
+      origin: cvu,
       destination: state.account,
       value: parseInt(state.amount),
       type: "TRANSFER",
-      currency: state.currency,
+      currency: currency,
       description: state.description,
     };
-    if (datos.currency === "USD") {
-      if (datos.value > 0 && datos.value <= balanceDOLARES) {
-        axios
-          .post(`http://localhost:8080/users/transfer/transfer`, datos)
-          .then(() => {
-            dispatch(vaciarReducer());
-          })
-          .then(() => {
-            Alert.alert("AVISO", "Transferencia realizada con exito");
-            dispatch(accountUser(loginUser.id, "PESOS"));
-            dispatch(accountUser(loginUser.id, "USD"));
-            props.navigation.navigate("Home");
-            //props.route.params = undefined;
-          });
-      } else {
-        if (datos.value <= 0) {
-          Alert.alert("AVISO", "Monto a transferir debe ser mayor a 0");
-        } else {
-          Alert.alert("AVISO", "Saldo insuficiente");
-        }
-      }
-    }
-    if (datos.currency === "PESOS") {
-      if (datos.value > 0 && datos.value <= balancePESOS) {
-        axios
-          .post(`http://localhost:8080/users/transfer/transfer`, datos)
-          .then(() => {
-            dispatch(vaciarReducer());
-          })
-          .then(() => {
-            Alert.alert("AVISO", "Transferencia realizada con exito");
-            dispatch(accountUser(loginUser.id, "PESOS"));
-            dispatch(accountUser(loginUser.id, "USD"));
-            props.navigation.navigate("Home");
-            //props.route.params = undefined;
-          });
-      } else {
-        if (datos.value <= 0) {
-          Alert.alert("AVISO", "Monto a transferir debe ser mayor a 0");
-        } else {
-          Alert.alert("AVISO", "Saldo insuficiente");
-        }
-      }
-    }
+    axios
+      .post(`http://localhost:8080/users/transfer/transfer`, datos)
+      .then(() => {
+        dispatch(vaciarReducer());
+      })
+      .then(() => {
+        dispatch(accountUser(loginUser.id, "PESOS"));
+        dispatch(accountUser(loginUser.id, "USD"));
+      });
   };
 
   return (
@@ -134,7 +70,7 @@ function SendMoneyScreen(props) {
       </View>
       <View style={styles.regform}>
         <Picker
-          selectedValue={state.type}
+          selectedValue={state.idType}
           style={styles.picker}
           onValueChange={(itemValue) => handleChangeText(itemValue, "type")}
         >
@@ -144,16 +80,15 @@ function SendMoneyScreen(props) {
 
         <TextInput
           style={styles.textinput}
-          placeholder="ID de Cuenta"
+          placeholder="ID account"
           underlineColorAndroid={"transparent"}
-          editable={false}
           keyboardType="numeric"
           onChangeText={(value) => handleChangeText(value, "account")}
           value={state.account}
         />
         <TextInput
           style={styles.textinput}
-          placeholder="$ Cantidad"
+          placeholder="$ Amount"
           underlineColorAndroid={"transparent"}
           keyboardType="numeric"
           onChangeText={(value) => handleChangeText(value, "amount")}
@@ -170,6 +105,7 @@ function SendMoneyScreen(props) {
           mode="contained"
           onPress={() => {
             sendMoney();
+            props.navigation.navigate("Home");
           }}
         >
           Enviar
@@ -225,4 +161,5 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SendMoneyScreen;
+export default SendMoneyScreen2;
+

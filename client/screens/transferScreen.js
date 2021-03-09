@@ -10,7 +10,7 @@ function TransferScreen(props) {
   const accounts = useSelector((state) => state.user.registerData);  
   const loginUser = useSelector((state) => state.login.loginUser);
   const menutransfer = useSelector((state) => state.transfer.dataTransfer);
-  
+  console.log(menutransfer);
   useEffect(()=>{
     props.navigation.navigate("Transfer");
   },[menutransfer])
@@ -28,15 +28,31 @@ function TransferScreen(props) {
             <Icon name="sc-telegram" type="evilicon" />
             <Text>USD</Text>
           </TouchableOpacity>
+          <TouchableOpacity            
+            onPress={() => {
+              dispatch(menuTransfer(accounts[0].cvu));
+            }}
+          >
+            <Icon name="sc-telegram" type="evilicon" />
+            <Text>PESOS</Text>
+          </TouchableOpacity>
+          <TouchableOpacity            
+            onPress={() => {
+              props.navigation.navigate("Home");
+            }}
+          >
+            <Icon name="sc-telegram" type="evilicon" />
+            <Text>Inicio</Text>
+          </TouchableOpacity>
           <Text>Historial de Transferencias</Text>
         </View>
         <View style={styles.thirdContainer}>
           <View  style={styles.secondButtonContainer}>       
-        {
+        {        
           menutransfer?.map(transfer => 
           
-          <View key={transfer.id} style={styles.general}>
-          <Text style={{ color: "black", fontSize: 20 }}>{transfer.createdAt.slice(0,10)}</Text>
+          <View key={transfer.id} style={transfer.type=="DEP"? styles.general : transfer.origin != accounts[0].cvu ? styles.general : styles.generalT  }>
+          <Text style={{ color: "black", fontSize: 20 }}>{transfer.createdAt.slice(0,10)} {transfer.type}</Text>
           <View style={{ alignItems: "center", flexDirection: "row" }}>
             <View style={{ alignItems: "center", paddingRight: 55 }}>
               <Text style={styles.generalSumLabel}>Valor transferido</Text>
@@ -45,7 +61,7 @@ function TransferScreen(props) {
               </Text>
             </View>
             <View style={{ alignItems: "center" }}>
-              <Text style={styles.generalSumLabel}>Transferida a</Text>
+              <Text style={styles.generalSumLabel}>Transferida de/a</Text>
               <Text style={styles.generalSumContent}>
                 {transfer.destination}
               </Text>
@@ -54,7 +70,7 @@ function TransferScreen(props) {
           <View style={{ color: "black", fontSize: 12 , alignItems: "center"}}>
             <Text style={styles.generalSumLabel}>Descripcion</Text>
             <Text style={styles.generalSumContent}>
-              {transfer.description}
+              {transfer.description}              
             </Text>
           </View>
         </View>
@@ -96,7 +112,23 @@ const styles = StyleSheet.create({
     },
 
     general: {
-      backgroundColor: "#fff",
+      backgroundColor: "rgb(172, 232, 179)",
+      width: 400,
+      height: 210,
+      alignSelf: "center",
+      alignItems: "center",
+      justifyContent: "space-evenly",
+      borderRadius: 10,
+      shadowColor: "#000",
+      shadowOffset: { width: 5, height: 5 },
+      shadowOpacity: 0.5,
+      shadowRadius: 3,
+      elevation: 3,
+      marginBottom: 20,
+    },
+
+    generalT: {
+      backgroundColor: "rgb(216, 168, 168)",
       width: 400,
       height: 210,
       alignSelf: "center",

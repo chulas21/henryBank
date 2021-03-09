@@ -5,8 +5,36 @@ const { User, Account, Transfer } = require("../../database/db");
 // const bcrypt = require("bcryptjs");
 
 server.post("/transfer", function (req, res) {
+
   // recibo destination del que manda y del que recive, junto con el value
+  //
+  console.log("sassadpaso por todos esos");
   const { origin, destination, value, type, currency, description } = req.body;
+  
+  // validaciones
+  if (type !== 'TRANSFER' && type !== 'DEP' && type !== 'EXT') {
+    return res.send({ msg: "El valor de tipo de operacion es incorrecto." })
+  }
+
+  if (currency !== 'PESOS' && currency !== 'USD') {
+    return res.send({ msg: 'El valor de moneda es incorrecto.' })
+  }
+
+  if (value < 0 || typeof value !== 'number' || isNaN(parseFloat(value))) {
+    return res.send({ msg: 'El formato de valor es incorrecto.' })
+  }
+
+  if (isNaN(parseInt(origin)) || isNaN(parseInt(destination)) 
+      || typeof origin !== 'number' || typeof destination !== 'number') {
+
+    let errorName = '';
+
+    if (isNaN(parseInt(origin)) || typeof origin !== 'number') errorName = 'origen'
+    else errorName = 'destino'
+    return res.send({ msg: `El formato de ${errorName} es incorrecto.`})
+  }
+  console.log("paso por todos esos");
+
   Account.findOne({ where: { cvu: origin } })
     .then((response) => {
       // console.log("AAAAAAAAAAAAA 1")

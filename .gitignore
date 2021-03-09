@@ -13,3 +13,6 @@ client/.expo
 
 # direction 
 client\redux\varible_host.js
+
+# yarn 
+client\yarn.lock

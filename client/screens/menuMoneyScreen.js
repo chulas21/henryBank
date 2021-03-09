@@ -16,17 +16,26 @@ function MenuMoneyScreen(props) {
             <TouchableOpacity 
               style={styles.longButton}
               onPress={() => {
-                props.navigation.navigate('SendMoney');
+                props.navigation.navigate('SendMoney2');
               }}
               >
-                <Text>Transferir a otra cuenta</Text>
+                <Text>No incritos Henrybank</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity 
+              style={styles.longButton}
+              onPress={() => {
+                props.navigation.navigate('Contacts');
+              }}
+              >
+                <Text>Propios e incritos Henrybank</Text>
             </TouchableOpacity>
 
             <TouchableOpacity 
               style={styles.longButton}
               onPress={() => alert('En desarrollo')}
               >
-                <Text>Incribir cuenta</Text>
+                <Text>Incritos de otros bancos</Text>
             </TouchableOpacity>
         </View>
         </View>

@@ -5,27 +5,59 @@ const { Contact, User, Account } = require("../../database/db");
 server.post("/:id", async (req, res, next) => {
   const { id } = req.params;
   const { email } = req.body;
-  try {
-    const contact = await User.findOne({
-      where: { email },
-      include: { model: Account },
-    }); //Busca el contacto
-    console.log(contact);
-    console.log(contact.accounts);
-    const result = await Contact.create({
-      alias: contact.name, // Se nombra por defecto.
-      email: contact.email,
-      userId: id,
-      mobile: contact.phone,
-      cvu_pesos: contact.accounts[0].cvu,
-      cvu_dolares: contact.accounts[1].cvu,
-      contactId: contact.id,
-    });
-    res.status(201).json(result); //devuelve el contacto creado.
-  } catch (error) {
-    next(error);
+  const verificar = await Contact.findOne({ where: { email, userId: id } });
+
+  if (verificar) {
+    res.send("ya es un contacto");
+  } else {
+    try {
+      const contact = await User.findOne({
+        where: { email },
+        include: { model: Account },
+      }); //Busca el contacto
+      console.log(contact);
+      console.log(contact.accounts);
+      const result = await Contact.create({
+        alias: contact.name, // Se nombra por defecto.
+        email: contact.email,
+        userId: id,
+        mobile: contact.phone,
+        cvu_pesos: contact.accounts[0].cvu,
+        cvu_dolares: contact.accounts[1].cvu,
+
+        contactId: contact.id,
+      });
+      res.status(201).json(result); //devuelve el contacto creado.
+    } catch (error) {
+      next(error);
+    }
   }
 });
+
+// server.post("/:id", async (req, res, next) => {
+//   const { id } = req.params;
+//   const { email } = req.body;
+//   try {
+//     const contact = await User.findOne({
+//       where: { email },
+//       include: { model: Account },
+//     }); //Busca el contacto
+//     console.log(contact);
+//     console.log(contact.accounts);
+//     const result = await Contact.create({
+//       alias: contact.name, // Se nombra por defecto.
+//       email: contact.email,
+//       userId: id,
+//       mobile: contact.phone,
+//       cvu_pesos: contact.accounts[0].cvu,
+//       cvu_dolares: contact.accounts[1].cvu,
+//       contactId: contact.id,
+//     });
+//     res.status(201).json(result); //devuelve el contacto creado.
+//   } catch (error) {
+//     next(error);
+//   }
+// });
 
 // Borrar un contacto.
 server.delete("/:id/:contactId", async (req, res, next) => {

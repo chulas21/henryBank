@@ -12,13 +12,22 @@ import {
   Switch,
 } from "react-native-paper";
 import { DrawerItem, DrawerContentScrollView } from "@react-navigation/drawer";
+import { useDispatch, useSelector } from "react-redux";
 
 function DrawerContent(props) {
+  const loginUser = useSelector((state) => state.login.loginUser);
   const [darkTheme, setDarkTheme] = React.useState(false);
 
   const toggleDarkTheme = () => {
     setDarkTheme(!darkTheme);
   };
+
+  var nombre,
+    email = "";
+  if (loginUser) {
+    nombre = loginUser.name + " " + loginUser.lastName;
+    email = loginUser.email;
+  }
 
   return (
     <View style={styles.mainContainer}>
@@ -34,8 +43,8 @@ function DrawerContent(props) {
                 size={50}
               />
               <View style={{ marginLeft: 15, flexDirection: "column" }}>
-                <Title style={styles.title}>Test User</Title>
-                <Caption style={styles.caption}>test@test.com</Caption>
+                <Title style={styles.title}>{nombre}</Title>
+                <Caption style={styles.caption}>{email}</Caption>
               </View>
             </View>
           </View>

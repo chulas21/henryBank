@@ -100,7 +100,7 @@ function ConsolidateScreen(props) {
           <Text style={{ color: "black", fontSize: 20 }}>General</Text>
           <View style={{ alignItems: "center", flexDirection: "row" }}>
             <View style={{ alignItems: "center", paddingRight: 55 }}>
-              <Text style={styles.generalSumLabel}>Income</Text>
+              <Text style={styles.generalSumLabel}>Ingresos</Text>
               <Text style={styles.generalSumContent}>
                 $ {userObject.generalIncomes}
               </Text>

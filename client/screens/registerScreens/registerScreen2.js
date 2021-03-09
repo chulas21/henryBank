@@ -90,7 +90,7 @@ export const registerScreen2 = ({ navigation }) => {
           )}
         </View>
         <Picker
-          selectedValue={state.idType}
+          selectedValue={state.docType}
           style={styles.picker}
           onValueChange={(itemValue) => handleChangeText(itemValue, "docType")}
         >
