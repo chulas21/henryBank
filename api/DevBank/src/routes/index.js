@@ -1,4 +1,3 @@
-
 const express = require("express");
 const router = express.Router();
 
@@ -10,19 +9,27 @@ const transfer = require("./transfer/tranfer");
 const getTransfer = require("./transfer/get.transfer");
 const contact = require("./contact/contact");
 // const account = require("./account/account")
+const statistics = require("./statistics");
+
+// statistics
+router.use('/users/statistics', statistics);
 
 // tranfer
 router.use("/users/transfer", transfer);
 router.use('/users/transfer', getTransfer);
+
 // auth login
 router.use("/users/auth", postAuth);
+
 //Contact route
 router.use("/users/contact", contact);
+
 // Account rute
 // router.use('/account', account);
 // use Users
 router.use("/users", postUsers);
 router.use("/users", getUsers);
+
 
 module.exports = router;
 

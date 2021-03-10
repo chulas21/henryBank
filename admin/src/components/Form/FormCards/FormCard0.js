@@ -1,30 +1,33 @@
 import React, { useState} from 'react'
 import { useDispatch } from 'react-redux'
-import { changeCurrent, returnCurrent } from '../../../stores/Form/actions/form_actions'
+import { changeCurrent } from '../../../stores/Form/actions/form_actions'
 import { postForm } from '../../../controllers/formControllers'
 import logo from '../../../images/Negro.svg'
 
 import './styles.css'
 
-const FormCard1 = (props) => {
+const FormCard0 = (props) => {
     const [info, setInfo] = useState({
-        name: '',
-        lastName: '',
-        phone: ''
+        email: '',
+        password: '',
+        confirm: ''
     })
 
     const [errs, setErrs] = useState({}) 
 
     const validate = (info) => {
         let errors = {}
-        if(!info.name){
-            errors.name = 'Name is empty'
+        if(!info.email){
+            errors.email = 'email is empty'
+        }else if(!/\S+@\S+\.\S+/.test(info.email)){
+            errors.email = 'it is not an email'
         }
-        if(!info.lastName){
-            errors.lastName = 'lastName is empty'
-        }
-        if(!info.phone){
-            errors.phone = 'Phone is empty'
+        if(!info.password){
+            errors.password = 'password is empty'
+        }else if(!/(?=.*[0-9])/.test(info.password)){
+            errors.password = 'Password must have 9 caracters'
+        }else if(info.password === info.confirm){
+            errors.password = 'Password is invalid'
         }
         return errors
     }
@@ -46,23 +49,18 @@ const FormCard1 = (props) => {
         postForm(parseInt(props.userId), info)
     }
 
-    const handlerPrevious = (e) => {
-        e.preventDefault()
-        dispatch(returnCurrent())
-    }
-
     return (
         <div className='cnt'>
             <header>
                 <img src={logo} />
             </header>
             <div className="progress-bar">
-                <div className="step active">
-                    <p className='active'>Email</p>
-                    <div className="bullet active">
+                <div className="step">
+                    <p>Email</p>
+                    <div className="bullet">
                         <span>1</span>
                     </div>
-                    <div className="check fas fa-check active">
+                    <div className="check fas fa-check">
                     </div>
                 </div>
                 <div className="step">
@@ -94,27 +92,27 @@ const FormCard1 = (props) => {
                 <form action='#' >
                     <div className='page slide-page'>
                         <div className='title'>
-                            Basic Info:</div>
+                            @:</div>
                         <div className='field'>
                             <div className='label'>
-                                First Name</div>
-                            <input type='text' name='name' onChange={handlerInput} value={info.name} autocomplete="off" />
+                                Email</div>
+                            <input type='email' name='email' onChange={handlerInput} value={info.email} autocomplete="off" />
                         </div>
                         <div className='field'>
                             <div className='label'>
-                                Last Name</div>
-                            <input type='text' name='lastName' onChange={handlerInput} value={info.lastName} autocomplete="off" />
+                                Password</div>
+                            <input type='password' name='password' onChange={handlerInput} value={info.password} autocomplete="off" />
                         </div>
                         <div className='field'>
                             <div className='label'>
-                                Phone</div>
-                            <input type='tel' name='phone' onChange={handlerInput} value={info.phone} autocomplete="off" />
+                                Confirm Password </div>
+                            <input type='password' name='confirm' onChange={handlerInput} value={info.confirm} autocomplete="off" />
                         </div>
-                        <div class="field btns">
-                            <button type='submit' class="prev-1 prev" onClick={(e) => handlerPrevious(e)}>Previous</button>
+                        <div className='field'>
                             {Object.keys(errs).length === 0 ?
-                                <button type='submit' class="next-1 next" onClick={(e) => handlerNext(e)}>Next</button>:
-                                <button type='submit' class="next-1 next disabled" disabled>Next</button>}
+                                <button type='submit' className='firstNext next' onClick={(e) => handlerNext(e)}>Next</button>:
+                                <button  disabled>{errs.email || errs.password}</button>
+                               }
                         </div>
                     </div>
                 </form>
@@ -124,4 +122,4 @@ const FormCard1 = (props) => {
     )
 }
 
-export default FormCard1
+export default FormCard0

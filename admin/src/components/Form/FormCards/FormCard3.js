@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { changeCurrent, returnCurrent } from '../../../stores/Form/actions/form_actions'
 import { postForm } from '../../../controllers/formControllers'
+import logo from '../../../images/Negro.svg'
 
 import './styles.css'
 
@@ -14,6 +15,28 @@ const FormCard3 = (props) => {
         country: ''
     })
 
+    const [errs, setErrs] = useState({}) 
+
+    const validate = (info) => {
+        let errors = {}
+        if(!info.street){
+            errors.street = 'street is empty'
+        }
+        if(!info.number){
+            errors.number = 'number is empty'
+        }
+        if(!info.location){
+            errors.location = 'location is empty'
+        }
+        if(!info.province){
+            errors.province = 'province is empty'
+        }
+        if(!info.country){
+            errors.country = 'country is empty'
+        }
+        return errors
+    }
+
     const dispatch = useDispatch()
 
     const handlerInput = (e) => {
@@ -21,6 +44,7 @@ const FormCard3 = (props) => {
             ...info,
             [e.target.name]: e.target.value
         })
+        setErrs(validate(info))
     }
 
 
@@ -37,12 +61,22 @@ const FormCard3 = (props) => {
 
     return (
         <div className='cnt'>
-            <header>SignUp Form</header>
+            <header>
+                <img src={logo} />
+            </header>
             <div class="progress-bar">
-                <div class="step active">
-                    <p className='active'>Basic Info</p>
-                    <div class="bullet active">
+                <div className="step active">
+                    <p className='active'>Email</p>
+                    <div className="bullet active">
                         <span>1</span>
+                    </div>
+                    <div className="check fas fa-check active">
+                    </div>
+                </div>
+                <div class="step active">
+                    <p className='active'>Basic</p>
+                    <div class="bullet active">
+                        <span>2</span>
                     </div>
                     <div class="check fas fa-check active">
                     </div>
@@ -50,7 +84,7 @@ const FormCard3 = (props) => {
                 <div class="step active">
                     <p className='active'>Documents</p>
                     <div class="bullet active">
-                        <span>2</span>
+                        <span>3</span>
                     </div>
                     <div class="check fas fa-check active">
                     </div>
@@ -58,7 +92,7 @@ const FormCard3 = (props) => {
                 <div class="step">
                     <p>Address</p>
                     <div class="bullet">
-                        <span>3</span>
+                        <span>4</span>
                     </div>
                     <div class="check fas fa-check">
                     </div>
@@ -92,7 +126,9 @@ const FormCard3 = (props) => {
                         </div>
                         <div class="field btns">
                             <button class="prev-3 prev" onClick={(e) => handlerPrevious(e)} >Previous</button>
-                            <button class="submit" onClick={(e) => handlerNext(e)}>Submit</button>
+                            {Object.keys(errs).length === 0 ?
+                                <button type='submit' class="submit" onClick={(e) => handlerNext(e)}>Next</button>:
+                                <button type='submit' class="submit" disabled>Next</button>}
                         </div>
                     </div>
                 </form>

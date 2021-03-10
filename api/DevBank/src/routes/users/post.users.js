@@ -106,12 +106,12 @@ server.post("/:userId", (req, res) => {
 
   userController
     .getOneUser(userId)
-    .then((user) => {
+    /*.then((user) => {
       if (!user) {
         return res.status(400).json({ msg: "User does not exist" });
       }
       return userController.updateInfo(user, info);
-    })
+    })*/
     .then(() => {
       return accountController.getAccount(userId);
     })

@@ -1,6 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {BrowserRouter as Router} from 'react-router-dom'
+
+import {ThemeProvider} from '@material-ui/core/styles'
+import CssBaseline from '@material-ui/core/CssBaseline'
+import themeLight from './theme/themeLight'
 
 import App from './App';
 
@@ -14,11 +17,12 @@ const store = createStore(
 )
 
 ReactDOM.render(
-  <Provider store={store}>
-    <Router >
-      <App />
-    </Router>
-  </Provider>,
+  <ThemeProvider theme={themeLight}>
+    <CssBaseline />
+    <Provider store={store}>
+        <App />
+    </Provider>
+  </ThemeProvider>,
   
   document.getElementById('root')
 );
