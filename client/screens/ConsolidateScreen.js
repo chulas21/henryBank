@@ -10,13 +10,11 @@ import { vaciarReducer, accountUser } from "../redux/user/actions";
 
 function ConsolidateScreen(props) {
   const [checked, setChecked] = useState("first");
-
   const loginUser = useSelector((state) => state.login.loginUser);
   const accountUserLogin = useSelector((state) => state.user.registerData);
-
   const [balance, setBalance] = useState(0);
-
   const dispatch = useDispatch();
+  var profilePic = useSelector((state) => state.user.uri);
   useEffect(() => {
     if (loginUser) {
       dispatch(vaciarReducer);
@@ -49,7 +47,6 @@ function ConsolidateScreen(props) {
     generalIncomes: 2345.6,
     generalExpenses: 1234.5,
   };
-
   return (
     <View style={styles.mainContainer}>
       <View style={styles.firstContainer}>
@@ -57,12 +54,19 @@ function ConsolidateScreen(props) {
           <Text style={{ paddingBottom: 20, color: "#fff" }}>
             Hola, {userObject.name}
           </Text>
-          <TouchableOpacity style={styles.avatarButton}>
+          <TouchableOpacity
+            style={styles.avatarButton}
+            onPress={() =>
+              props.navigation.navigate("ProfilePic", {
+                uri: profilePic,
+                tempImg: "",
+              })
+            }
+          >
             <Avatar
               rounded
               source={{
-                uri:
-                  "https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg",
+                uri: profilePic,
               }}
             />
           </TouchableOpacity>
@@ -277,14 +281,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flexDirection: "row",
     borderRadius: 10,
-    shadowColor: "#000",
-    shadowOffset: { width: 3, height: 3 },
-    shadowOpacity: 0.5,
-    shadowRadius: 3,
-    elevation: 3,
-  },
-
-  elevation: {
     shadowColor: "#000",
     shadowOffset: { width: 3, height: 3 },
     shadowOpacity: 0.5,
