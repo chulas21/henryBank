@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState} from 'react'
 import { useDispatch } from 'react-redux'
 import { changeCurrent, returnCurrent } from '../../../stores/Form/actions/form_actions'
-import { postForm } from '../../../controllers/formControllers'
+import {addData} from '../../../stores/Register/actions/register_actions'
 import logo from '../../../images/Negro.svg'
 
 import './styles.css'
 
-const FormCard3 = (props) => {
+const FormCard3 = () => {
     const [info, setInfo] = useState({
         street: '',
         number: '',
@@ -50,8 +50,12 @@ const FormCard3 = (props) => {
 
     const handlerNext = (e) => {
         e.preventDefault()
-        dispatch(changeCurrent())
-        postForm(parseInt(props.userId), info)
+        if(info.street.length < 2||info.number.length < 2||info.location.length < 2||info.province.length < 2||info.country.length < 2){
+            alert('please fill the form') 
+        }else{
+            dispatch(changeCurrent())
+            dispatch(addData(info))
+        }
     }
 
     const handlerPrevious = (e) => {
@@ -124,11 +128,11 @@ const FormCard3 = (props) => {
                                 Country</div>
                             <input type='text' name='country' onChange={handlerInput} value={info.country} />
                         </div>
-                        <div class="field btns">
-                            <button class="prev-3 prev" onClick={(e) => handlerPrevious(e)} >Previous</button>
+                        <div className="field btns">
+                            <button className="prev-3 prev" onClick={(e) => handlerPrevious(e)} >Previous</button>
                             {Object.keys(errs).length === 0 ?
-                                <button type='submit' class="submit" onClick={(e) => handlerNext(e)}>Next</button>:
-                                <button type='submit' class="submit" disabled>Next</button>}
+                                <button type='submit' className="submit" onClick={(e) => handlerNext(e)}>Next</button>:
+                                <button type='submit' className="submit" disabled>Next</button>}
                         </div>
                     </div>
                 </form>

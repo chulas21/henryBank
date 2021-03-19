@@ -1,6 +1,6 @@
 const server = require("express").Router();
 const userController = require("../../controllers/auth.controller");
-const { User } = require("../../database/db");
+const { User, Account } = require("../../database/db");
 // const passport = require("passport");
 const bcrypt = require("bcryptjs");
 
@@ -9,7 +9,7 @@ server.post("/login", function (req, res) {
   User.findOne({
     where: {
       email: username,
-    },
+    }
   })
     .then((response) => {
       console.log("LINEA 16", res.dataValues);
@@ -33,7 +33,7 @@ server.post("/logout", (req, res) => {
 });
 
 server.get("/me", (req, res) => {
-  if (req.isAuthenticated()) return res.send(req.user);
+  if (req.session.user) return res.json(req.session.user);
   else return res.status(401).send("No estás logeado");
 });
 

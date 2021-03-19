@@ -20,6 +20,16 @@ const useStyle = makeStyles(theme => ({
         color: '#fff',
         textDecoration: 'none',
     },
+    profile: {
+        display: 'flex',
+        alignItems: 'center',
+        width: '150px',
+        justifyContent: 'space-around',
+        // backgroundColor: '#000'
+    },
+    login: {
+        
+    }
 }))
 
 export default useStyle;

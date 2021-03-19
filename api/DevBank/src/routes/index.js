@@ -8,8 +8,11 @@ const postAuth = require("./auth/post.auth");
 const transfer = require("./transfer/tranfer");
 const getTransfer = require("./transfer/get.transfer");
 const contact = require("./contact/contact");
-// const account = require("./account/account")
+const getAccounts = require('./Accounts/accounts')
 const statistics = require("./statistics");
+
+//Accounts
+router.use('/users/accounts', getAccounts);
 
 // statistics
 router.use('/users/statistics', statistics);

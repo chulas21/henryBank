@@ -79,15 +79,15 @@ const themeLight = createMuiTheme({
               // background: 'radial-gradient(circle, rgba(25,171,171,1) 0%, rgba(26,75,88,1) 0%, rgba(26,27,47,1) 100%)',
             },
             '*::-webkit-scrollbar': {
-              width: '0.5em'
+              width: '0.4em',
             },
             '*::-webkit-scrollbar-track': {
-              borderRadius: "10px",
+              borderRadius: "0px",
               '-webkit-box-shadow': `${palette.dark}`,
             },
             '*::-webkit-scrollbar-thumb': {
               background: `${palette.primary.main}`,
-              borderRadius: "6px",
+              borderRadius: "0px",
               border: `3px solid ${palette.dark}`,
             },
             '*::-webkit-scrollbar:vertical':{

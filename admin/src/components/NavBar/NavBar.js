@@ -1,18 +1,34 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
+import {useSelector} from 'react-redux'
 import useStyle from './styles'
-import isoBlack from '../../images/isoFullWhite.svg'
 import fontBlack from '../../images/FontWhite.svg'
 import {NavLink} from 'react-router-dom'
 import 
 {AppBar,
 Toolbar,
-Typography,
 Button,
-Icon,
+Avatar,
 } from '@material-ui/core'
+
+import {Profile} from '../SvgIcons/IconsMaterial';
+
+import ProfileLogin from './ProfileLogin'
+import Login from './Login'
 
 const NavBar = () => {
     const classes = useStyle()
+    const [auth, setAuth] = useState(false)
+
+    const user = useSelector(state => state.user_reducer.user[0])
+
+    useEffect(() => {
+       if(user){
+        setAuth(true)
+       }else{
+        setAuth(false)
+       } 
+    },[user])
+    
     return (
         <div className={classes.root}> 
             <AppBar position="fixed" color='primary' className={classes.appBar}>
@@ -21,12 +37,7 @@ const NavBar = () => {
                   <img  src={fontBlack} />
                 </NavLink>
                 <div className={classes.space}></div>
-                <NavLink to='/login' className={classes.btn}>
-                  <Button color='inherit'>Login</Button>
-                </NavLink>
-                <NavLink to='/form' className={classes.btn}>
-                  <Button color='inherit'>Register</Button>
-                </NavLink>
+                {auth ? <ProfileLogin user={user} /> : <Login />}
               </Toolbar>
             </AppBar>
         </div>

@@ -33,10 +33,14 @@ module.exports = {
     },
 
     getAccount(id) {
-        return Account.findOne({
+        return Account.findAll({
             where: {
                 userId: id
             }
+        })
+        .then((acc) => {
+            if(!acc) return false
+            return acc
         })
     }
 }

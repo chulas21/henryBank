@@ -113,7 +113,8 @@
     padding: 0 0 0 10%;
     width: 100%;
     height: 100%;
-    background-color: #243746;
+    background: rgb(115,195,213);
+    background: linear-gradient(0deg, rgba(115,195,213,1) 0%, rgba(36,55,70,1) 100%);
   }
   .form-outer form .page{
     padding: 2% 0 0 0 ;  
@@ -169,8 +170,9 @@
     align-items: center;
     overflow: hidden;
     width: 100%;
-    min-height: 50vh;
-    background-color: #243746;
+    min-height: 30vh;
+    background: rgb(115,195,213);
+    background: linear-gradient(0deg, rgba(115,195,213,1) 0%, rgba(36,55,70,1) 100%);
   }
 
   .titlep{
@@ -189,7 +191,7 @@
     width: 100%;
     height: calc(100% + 5px);
     border: none;
-    background: #5f99af;
+    background: #235D73;
     margin-top: -10px;
     border-radius: 5px;
     color: #fff;
@@ -200,8 +202,8 @@
     text-transform: uppercase;
   }
   form .page .field button:hover{
-    background: #235D73;
-    color:  white; 
+    background: #5f99af;
+    color:  #000; 
   }
 
   form .page .btns button.prev{
@@ -212,12 +214,16 @@
     margin-left: 3px;
   }
 
+  .navButton{
+    width: 100%;
+  }
+
   .button{
     width: 50%;
     height: calc(100% + 5px);
     border: none;
-    background: #5f99af;
-    margin-top: 8%;
+    background: #235D73;
+    margin: 10%;
     border-radius: 5px;
     color: #fff;
     cursor: pointer;
@@ -228,7 +234,7 @@
   }
 
   .button:hover{
-    background: #235D73;
-    color:  white; 
+    background: #5f99af;
+    color:  #000; 
   }
   

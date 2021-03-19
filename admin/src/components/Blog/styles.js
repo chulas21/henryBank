@@ -5,7 +5,7 @@ const drawerWidth = 224;
 
 const useStyles = makeStyles(theme => ({
     root: {
-        marginTop: theme.spacing(8),
+        marginTop: theme.spacing(0),
     },
     toolbar: theme.mixins.toolbar,
     drawer:{
@@ -84,10 +84,13 @@ const useStyles = makeStyles(theme => ({
         padding: theme.spacing(4),
         backgroundColor: 'rgba(54,142,175,0.1)'
     },
+    cntVideo: {
+        display: 'flex',
+        justifyContent: 'center',
+    },
     video: {
         boxShadow: theme.shadows[8],
         borderRadius: theme.spacing(2),
-
     },
     team: {
         display: 'flex',
@@ -152,7 +155,7 @@ const useStyles = makeStyles(theme => ({
     svgText: {
         width: '60%',
         height: '60%'
-    }
+    },
 
 
 }))

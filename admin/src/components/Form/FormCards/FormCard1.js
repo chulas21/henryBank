@@ -1,12 +1,12 @@
 import React, { useState} from 'react'
 import { useDispatch } from 'react-redux'
 import { changeCurrent, returnCurrent } from '../../../stores/Form/actions/form_actions'
-import { postForm } from '../../../controllers/formControllers'
+import {addData} from '../../../stores/Register/actions/register_actions'
 import logo from '../../../images/Negro.svg'
 
 import './styles.css'
 
-const FormCard1 = (props) => {
+const FormCard1 = () => {
     const [info, setInfo] = useState({
         name: '',
         lastName: '',
@@ -42,8 +42,12 @@ const FormCard1 = (props) => {
 
     const handlerNext = (e) => {
         e.preventDefault()
-        dispatch(changeCurrent())
-        postForm(parseInt(props.userId), info)
+        if(info.name.length < 2 || info.lastName.length < 2 || info.length < 2){
+            alert('please fill the form')
+        }else{
+            dispatch(changeCurrent())
+            dispatch(addData(info))
+        }
     }
 
     const handlerPrevious = (e) => {
@@ -98,23 +102,23 @@ const FormCard1 = (props) => {
                         <div className='field'>
                             <div className='label'>
                                 First Name</div>
-                            <input type='text' name='name' onChange={handlerInput} value={info.name} autocomplete="off" />
+                            <input type='text' name='name' onChange={handlerInput} value={info.name} autoComplete="off" />
                         </div>
                         <div className='field'>
                             <div className='label'>
                                 Last Name</div>
-                            <input type='text' name='lastName' onChange={handlerInput} value={info.lastName} autocomplete="off" />
+                            <input type='text' name='lastName' onChange={handlerInput} value={info.lastName} autoComplete="off" />
                         </div>
                         <div className='field'>
                             <div className='label'>
                                 Phone</div>
-                            <input type='tel' name='phone' onChange={handlerInput} value={info.phone} autocomplete="off" />
+                            <input type='tel' name='phone' onChange={handlerInput} value={info.phone} autoComplete="off" />
                         </div>
-                        <div class="field btns">
-                            <button type='submit' class="prev-1 prev" onClick={(e) => handlerPrevious(e)}>Previous</button>
+                        <div className="field btns">
+                            <button type='submit' className="prev-1 prev" onClick={(e) => handlerPrevious(e)}>Previous</button>
                             {Object.keys(errs).length === 0 ?
-                                <button type='submit' class="next-1 next" onClick={(e) => handlerNext(e)}>Next</button>:
-                                <button type='submit' class="next-1 next disabled" disabled>Next</button>}
+                                <button type='submit' className="next-1 next" onClick={(e) => handlerNext(e)}>Next</button>:
+                                <button type='submit' className="next-1 next disabled" disabled>Next</button>}
                         </div>
                     </div>
                 </form>

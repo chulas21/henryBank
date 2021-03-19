@@ -1,12 +1,12 @@
 import React, { useState} from 'react'
 import { useDispatch } from 'react-redux'
 import { changeCurrent } from '../../../stores/Form/actions/form_actions'
-import { postForm } from '../../../controllers/formControllers'
+import {addData} from '../../../stores/Register/actions/register_actions'
 import logo from '../../../images/Negro.svg'
 
 import './styles.css'
 
-const FormCard0 = (props) => {
+const FormCard0 = () => {
     const [info, setInfo] = useState({
         email: '',
         password: '',
@@ -21,16 +21,12 @@ const FormCard0 = (props) => {
             errors.email = 'email is empty'
         }else if(!/\S+@\S+\.\S+/.test(info.email)){
             errors.email = 'it is not an email'
-        }
-        if(!info.password){
-            errors.password = 'password is empty'
-        }else if(!/(?=.*[0-9])/.test(info.password)){
-            errors.password = 'Password must have 9 caracters'
-        }else if(info.password === info.confirm){
-            errors.password = 'Password is invalid'
-        }
+        }else if(!/([a-z]{8})+([0-9])/.test(info.password)){
+            errors.password = '9 caracters include numbers'
+        }    
         return errors
     }
+
 
     const dispatch = useDispatch()
 
@@ -45,8 +41,15 @@ const FormCard0 = (props) => {
 
     const handlerNext = (e) => {
         e.preventDefault()
-        dispatch(changeCurrent())
-        postForm(parseInt(props.userId), info)
+        if(info.password !== info.confirm){
+            alert('password is not the same')
+        }else if(info.email.lenght < 2 || info.password.length < 2){
+            alert('please fill the form')
+        }
+        else{
+            dispatch(addData(info))
+            dispatch(changeCurrent())
+        }
     }
 
     return (
@@ -96,17 +99,17 @@ const FormCard0 = (props) => {
                         <div className='field'>
                             <div className='label'>
                                 Email</div>
-                            <input type='email' name='email' onChange={handlerInput} value={info.email} autocomplete="off" />
+                            <input type='email' name='email' onChange={handlerInput} value={info.email} autoComplete="off" />
                         </div>
                         <div className='field'>
                             <div className='label'>
                                 Password</div>
-                            <input type='password' name='password' onChange={handlerInput} value={info.password} autocomplete="off" />
+                            <input type='password' name='password' onChange={handlerInput} value={info.password} autoComplete="off" />
                         </div>
                         <div className='field'>
                             <div className='label'>
                                 Confirm Password </div>
-                            <input type='password' name='confirm' onChange={handlerInput} value={info.confirm} autocomplete="off" />
+                            <input type='password' name='confirm' onChange={handlerInput} value={info.confirm} autoComplete="off" />
                         </div>
                         <div className='field'>
                             {Object.keys(errs).length === 0 ?

@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { changeCurrent,  returnCurrent} from '../../../stores/Form/actions/form_actions'
-import { postForm } from '../../../controllers/formControllers'
+import {addData} from '../../../stores/Register/actions/register_actions'
 import logo from '../../../images/Negro.svg'
 
 import './styles.css'
 
-const FormCard2 = (props) => {
+const FormCard2 = () => {
     const [info, setInfo] = useState({
         docType: '',
         docNumber: '',
@@ -42,8 +42,12 @@ const FormCard2 = (props) => {
 
     const handlerNext = (e) => {
         e.preventDefault()
-        dispatch(changeCurrent())
-        postForm(parseInt(props.userId), info)
+        if(info.docType.length < 2 || info.docNumber.length < 2 || info.birthday < 2){
+            alert('please fill the form')
+        }else{
+            dispatch(changeCurrent())
+            dispatch(addData(info))
+        }
     }
 
     const handlerPrevious = (e) => {
@@ -56,7 +60,7 @@ const FormCard2 = (props) => {
             <header>
                 <img src={logo} />
             </header>
-            <div class="progress-bar">
+            <div className="progress-bar">
                 <div className="step active">
                     <p className='active'>Email</p>
                     <div className="bullet active">
@@ -98,27 +102,30 @@ const FormCard2 = (props) => {
                         <div className='field'>
                             <div className='label'>
                                 Document Type</div>
-                            <select name='docType' onChange={handlerInput} value={info.docType} autocomplete="off">
+                            <select name='docType' onChange={handlerInput} value={info.docType} autoComplete="off">
                                 <option> </option>
                                 <option>DNI</option>
                                 <option>PASSPORT</option>
+                                <option>LE</option>
+                                <option>CI</option>
+                                <option>LC</option>
                             </select>
                         </div>
                         <div className='field'>
                             <div className='label'>
                                 Document Number</div>
-                            <input type='text' name='docNumber' onChange={handlerInput} value={info.docNumber} autocomplete="off" />
+                            <input type='text' name='docNumber' onChange={handlerInput} value={info.docNumber} autoComplete="off" />
                         </div>
                         <div className='field'>
                             <div className='label'>
                                 Birthday</div>
-                            <input type='date' name='birthday' onChange={handlerInput} value={info.birthday} autocomplete="off"/>
+                            <input type='date' name='birthday' onChange={handlerInput} value={info.birthday} autoComplete="off"/>
                         </div>
-                        <div class="field btns">
-                            <button type='submit' class="prev-1 prev" onClick={(e) => handlerPrevious(e)}>Previous</button>
+                        <div className="field btns">
+                            <button type='submit' className="prev-1 prev" onClick={(e) => handlerPrevious(e)}>Previous</button>
                             {Object.keys(errs).length === 0 ?
-                                <button type='submit' class="next-1 next" onClick={(e) => handlerNext(e)}>Next</button>:
-                                <button type='submit' class="next-1 next disabled" disabled>Next</button>}
+                                <button type='submit' className="next-1 next" onClick={(e) => handlerNext(e)}>Next</button>:
+                                <button type='submit' className="next-1 next disabled" disabled>Next</button>}
                         </div>
                     </div>
                 </form>

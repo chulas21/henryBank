@@ -1,7 +1,6 @@
 import React from 'react'
 import useStyles from './styles'
 import logo from '../../images/Blanco.svg'
-import isoBlack from '../../images/isoNegro.svg'
 import app from '../../images/mobile.svg'
 import us from '../../images/design.svg'
 import wallet from '../../images/wallet.svg'
@@ -11,27 +10,24 @@ import mates from '../../images/team.svg'
 import team from './team'
 import {
     Grid,
-    Paper,
     Avatar,
-    Box,
-    Drawer,
-    Divider,
-    List,
-    ListItem,
-    ListItemText,
     Typography,
+    Toolbar,
 } from '@material-ui/core'
-import TeamCard from './TeamCard'
+import TeamCard from './TeamCard' 
 
 const Blog = () => {
     const classes = useStyles()
 
+    const urlVideo = "https://youtube.com/embed/adLGHcj_fmA"
+
     return (
-        <Grid container className={classes.root} xs={12}>
+        <Grid container className={classes.root} >
             
             <Grid item container>
-                <Grid item container xs={12} >
-                    <Grid item conatiner className={classes.cnt}>
+                <Toolbar />
+                <Grid item container >
+                    <Grid item container className={classes.cnt}>
                         <Grid item container className={classes.cntBlog}>
                             <Grid item container className={classes.banner} >
                                 <Grid item className={classes.dev}>
@@ -48,8 +44,9 @@ const Blog = () => {
                                     </Typography>
                                     <img src={app} className={classes.svg} />
                                 </Grid>
-                                <Grid item>
-                                    <iframe width="100%" height="500vh" className={classes.video} src="https://www.youtube.com/embed/MPbUaIZAaeA" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                <Grid item className={classes.cntVideo}>
+                                    <iframe width="100%" height="500vh" className={classes.video} src={urlVideo} frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+                                    
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -57,7 +54,7 @@ const Blog = () => {
                             <Grid item container className={classes.field2} id='why'>
                                 <Grid item className={classes.ctntitle}>
                                     <Typography variant='h2' className={classes.title}>
-                                        Why Dev Bank
+                                        ¿Why Dev Bank?
                                     </Typography>
                                     <img src={us} className={classes.svg}/> 
                                 </Grid>
@@ -105,17 +102,17 @@ const Blog = () => {
                                 </Grid>
                                 <Grid item container spacing={2} className={classes.cntTeam}>
                                     <Grid item container xs={3} className={classes.cntCard}>
-                                        <Grid item className={classes.card}>
-                                            <Avatar src={team[0].img} />
+                                        <Grid item  className={classes.card}>
+                                            <Avatar src={team[0].img}  />
                                             <Typography variant='h6'>{team[0].name}</Typography>
                                             <Typography variant='subtitle2'>{team[0].workAs}</Typography>
                                         </Grid>
                                     </Grid>
                                     <Grid item container xs={3} className={classes.cntCard}>
-                                        <Grid item className={classes.card}>
-                                            <Avatar src={team[1].img}/>
-                                            <Typography variant='h6'>{team[1].name}</Typography>
-                                            <Typography variant='subtitle2'>{team[1].workAs}</Typography>
+                                        <Grid item  className={classes.card}>
+                                            <Avatar src={team[4].img}/>
+                                            <Typography variant='h6'>{team[4].name}</Typography>
+                                            <Typography variant='subtitle2'>{team[4].workAs}</Typography>
                                         </Grid>
                                     </Grid>
                                     <Grid item container xs={3} className={classes.cntCard}>
@@ -134,9 +131,9 @@ const Blog = () => {
                                     </Grid>
                                     <Grid item container xs={3} className={classes.cntCard}>
                                         <Grid item className={classes.card}>
-                                            <Avatar src={team[4].img} />
-                                            <Typography variant='h6'>{team[4].name}</Typography>
-                                            <Typography variant='subtitle2'>{team[4].workAs}</Typography>
+                                            <Avatar src={team[1].img} />
+                                            <Typography variant='h6'>{team[1].name}</Typography>
+                                            <Typography variant='subtitle2'>{team[1].workAs}</Typography>
                                         </Grid>
                                     </Grid>
                                     <Grid item container xs={3} className={classes.cntCard}>
